@@ -90,27 +90,6 @@
 				$wrapper->appendChild($label);
 			}
 		}
-
-		public function displayDatasourceFilterPanel(&$wrapper, $data=NULL, $errors=NULL, $fieldnamePrefix=NULL, $fieldnamePostfix=NULL){
-			
-			$wrapper->appendChild(
-				new XMLElement(
-					'h4',
-					$this->get('label') . ' <i>' . $this->Name() . '</i>'
-				)
-			);
-			$label = Widget::Label('Value');
-			$label->appendChild(
-				Widget::Input(
-					'fields[filter]' . ($fieldnamePrefix ? '['.$fieldnamePrefix.']' : '') . '['.$this->get('id') . ']' . ($fieldnamePostfix ? '[' . $fieldnamePostfix . ']' : ''),
-					($data ? General::sanitize($data) : NULL)
-				)
-			);	
-			$wrapper->appendChild($label);
-			
-			$wrapper->appendChild(new XMLElement('p', 'To filter by ranges, add <code>mysql:</code> to the beginning of the filter input. Use <code>value</code> for field name. E.G. <code>mysql: value &gt;= 1.01 AND value &lt;= {$price}</code>', array('class' => 'help')));
-			
-		}
 		
 		public function checkPostFieldData($data, &$message, $entry_id=NULL) {
 			$message = NULL;
@@ -156,6 +135,38 @@
 					array('', " `t$field_id`.`value` " ),
 					$data[0]
 				);
+				
+				$joins .= " LEFT JOIN `tbl_entries_data_$field_id` AS `t$field_id` ON (`e`.`id` = `t$field_id`.entry_id) ";
+				$where .= " AND $expression ";
+				
+			}elseif(preg_match('/^(-?(?:\d+(?:\.\d+)?|\.\d+)) to (-?(?:\d+(?:\.\d+)?|\.\d+))$/i', $data[0], $match)){
+				
+				$field_id = $this->get('id');
+				
+				$joins .= " LEFT JOIN `tbl_entries_data_$field_id` AS `t$field_id` ON (`e`.`id` = `t$field_id`.entry_id) ";
+				$where .= " AND `t$field_id`.`value` BETWEEN {$match[1]} AND {$match[2]} ";
+				
+			}elseif(preg_match('/^(equal to or )?(less|greater) than (-?(?:\d+(?:\.\d+)?|\.\d+))$/i', $data[0], $match)){
+				
+				$field_id = $this->get('id');
+                
+                $expression = " `t$field_id`.`value` ";
+				
+                switch($match[2]) {
+                    case 'less':
+                        $expression .= '<';
+                        break;
+                    
+                    case 'greater':
+                        $expression .= '>';
+                        break;
+                }
+                
+                if($match[1]){
+                    $expression .= '=';
+                }
+                
+				$expression .= " {$match[3]} ";
 				
 				$joins .= " LEFT JOIN `tbl_entries_data_$field_id` AS `t$field_id` ON (`e`.`id` = `t$field_id`.entry_id) ";
 				$where .= " AND $expression ";
