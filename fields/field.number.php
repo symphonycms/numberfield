@@ -100,6 +100,18 @@
 
 			return self::__OK__;
 		}
+		
+		public function processRawFieldData($data, &$status, $simulate = false, $entry_id = null) {
+			$status = self::__OK__;
+
+			if (strlen(trim($data)) == 0) return array();
+
+			$result = array(
+				'value' => $data
+			);
+
+			return $result;
+		}
 
 	/*-------------------------------------------------------------------------
 		Filtering:
