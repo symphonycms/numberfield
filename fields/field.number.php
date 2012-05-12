@@ -2,8 +2,8 @@
 
 	Class fieldNumber extends Field {
 
-		public function __construct(&$parent) {
-			parent::__construct($parent);
+		public function __construct() {
+			parent::__construct();
 			$this->_name = __('Number');
 			$this->_required = true;
 			$this->set('required', 'no');
