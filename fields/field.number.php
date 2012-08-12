@@ -1,7 +1,8 @@
 <?php
 
-	Class fieldNumber extends Field {
+	require_once FACE . '/interface.exportablefield.php';
 
+	class FieldNumber extends Field implements ExportableField {
 		public function __construct() {
 			parent::__construct();
 			$this->_name = __('Number');
@@ -100,7 +101,7 @@
 
 			return self::__OK__;
 		}
-		
+
 		public function processRawFieldData($data, &$status, &$message=null, $simulate = false, $entry_id = null) {
 			$status = self::__OK__;
 
@@ -111,6 +112,41 @@
 			);
 
 			return $result;
+		}
+
+	/*-------------------------------------------------------------------------
+		Export:
+	-------------------------------------------------------------------------*/
+
+		/**
+		 * Return a list of supported export modes for use with `prepareExportValue`.
+		 *
+		 * @return array
+		 */
+		public function getExportModes() {
+			return array(
+				'getUnformatted' =>	ExportableField::UNFORMATTED
+			);
+		}
+
+		/**
+		 * Give the field some data and ask it to return a value using one of many
+		 * possible modes.
+		 *
+		 * @param mixed $data
+		 * @param integer $mode
+		 * @param integer $entry_id
+		 * @return string|null
+		 */
+		public function prepareExportValue($data, $mode, $entry_id = null) {
+			$modes = (object)$this->getExportModes();
+
+			// Export unformatted:
+			if ($mode === $modes->getUnformatted && isset($data['value'])) {
+				return $data['value'];
+			}
+
+			return null;
 		}
 
 	/*-------------------------------------------------------------------------
