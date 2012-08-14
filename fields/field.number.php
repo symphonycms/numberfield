@@ -1,8 +1,9 @@
 <?php
 
 	require_once FACE . '/interface.exportablefield.php';
+	require_once FACE . '/interface.importablefield.php';
 
-	class FieldNumber extends Field implements ExportableField {
+	class FieldNumber extends Field implements ExportableField, ImportableField {
 		public function __construct() {
 			parent::__construct();
 			$this->_name = __('Number');
@@ -115,6 +116,25 @@
 		}
 
 	/*-------------------------------------------------------------------------
+		Import:
+	-------------------------------------------------------------------------*/
+
+		/**
+		 * Give the field some data and ask it to return a value.
+		 *
+		 * @param mixed $data
+		 * @param integer $entry_id
+		 * @return array
+		 */
+		public function prepareImportValue($data, $entry_id = null) {
+			if (strlen(trim($data)) == 0) return null;
+
+			return array(
+				'value' =>	$data
+			);
+		}
+
+	/*-------------------------------------------------------------------------
 		Export:
 	-------------------------------------------------------------------------*/
 
@@ -125,7 +145,8 @@
 		 */
 		public function getExportModes() {
 			return array(
-				'getUnformatted' =>	ExportableField::UNFORMATTED
+				'getUnformatted' =>	ExportableField::UNFORMATTED,
+				'getPostdata' =>	ExportableField::POSTDATA
 			);
 		}
 
@@ -142,8 +163,10 @@
 			$modes = (object)$this->getExportModes();
 
 			// Export unformatted:
-			if ($mode === $modes->getUnformatted && isset($data['value'])) {
-				return $data['value'];
+			if ($mode === $modes->getUnformatted || $mode === $modes->getPostdata) {
+				return isset($data['value'])
+					? $data['value']
+					: null;
 			}
 
 			return null;
