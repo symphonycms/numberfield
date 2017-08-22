@@ -230,7 +230,7 @@
 				array(
 					'title'				=> 'between',
 					'filter'			=> 'x to y',
-					'help'				=> __('Find values between two values with, %s to %s', array(
+					'help'				=> __('Find values between two values with %s to %s', array(
 						'<code>$x</code>',
 						'<code>$y</code>'
 					))
