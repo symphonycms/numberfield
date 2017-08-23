@@ -15,7 +15,7 @@
 	</authors>
 	<releases>
 		<release version="1.7.2" date="2017-08-23" min="2.5.x" max="2.x.x">
-			- PHP7 Compatibility
+			- PHP7 Compatibility for Symphony 2.x.x
 		</release>
 		<release version="1.7.1" date="2016-01-05" min="2.5" max="2.6.x">
 			- Set 'entry_id' as unique
