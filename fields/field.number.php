@@ -38,9 +38,9 @@
 		public function createTable() {
 			return Symphony::Database()->query(
 				"CREATE TABLE IF NOT EXISTS `tbl_entries_data_" . $this->get('id') . "` (
-				  `id` int(11) unsigned NOT NULL auto_increment,
-				  `entry_id` int(11) unsigned NOT NULL,
-				  `value` double default NULL,
+				  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+				  `entry_id` INT(11) UNSIGNED NOT NULL,
+				  `value` DOUBLE DEFAULT NULL,
 				  PRIMARY KEY  (`id`),
 				  UNIQUE KEY `entry_id` (`entry_id`),
 				  KEY `value` (`value`)
@@ -55,7 +55,7 @@
 		public function displaySettingsPanel(XMLElement &$wrapper, $errors = null) {
 			parent::displaySettingsPanel($wrapper, $errors);
 
-			$div = new XMLElement('div', NULL, array('class' => 'two columns'));
+			$div = new XMLElement('div', null, array('class' => 'two columns'));
 			$this->appendRequiredCheckbox($div);
 			$this->appendShowColumnCheckbox($div);
 			$wrapper->appendChild($div);
@@ -85,11 +85,11 @@
 			$label->appendChild(
 				Widget::Input(
 					'fields'.$fieldnamePrefix.'['.$this->get('element_name').']'.$fieldnamePostfix,
-					(strlen($value) != 0 ? $value : NULL)
+					(strlen($value) != 0 ? $value : null)
 				)
 			);
 
-			if($flagWithError != NULL) {
+			if($flagWithError != null) {
 				$wrapper->appendChild(Widget::Error($label, $flagWithError));
 			}
 			else {
@@ -98,7 +98,7 @@
 		}
 
 		public function checkPostFieldData($data, &$message, $entry_id = null) {
-			$message = NULL;
+			$message = null;
 
 			if($this->get('required') == 'yes' && strlen($data) == 0){
 				$message = __('‘%s’ is a required field.', array($this->get('label')));
@@ -113,7 +113,7 @@
 			return self::__OK__;
 		}
 
-		public function processRawFieldData($data, &$status, &$message=null, $simulate = false, $entry_id = null) {
+		public function processRawFieldData($data, &$status, &$message = null, $simulate = false, $entry_id = null) {
 			$status = self::__OK__;
 
 			if (strlen(trim($data)) == 0) return array();
