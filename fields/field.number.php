@@ -2,12 +2,16 @@
 
 	require_once FACE . '/interface.exportablefield.php';
 	require_once FACE . '/interface.importablefield.php';
+	require_once EXTENSIONS . '/numberfield/lib/class.entryquerynumberadapter.php';
 
 	class FieldNumber extends Field implements ExportableField, ImportableField {
 		public function __construct() {
 			parent::__construct();
+			$this->entryQueryFieldAdapter = new EntryQueryNumberAdapter($this);
+
 			$this->_name = __('Number');
 			$this->_required = true;
+
 			$this->set('required', 'no');
 		}
 
@@ -242,7 +246,7 @@
 				),
 				array(
 					'title'				=> 'between',
-					'filter'			=> 'x to y',
+					'filter'			=> 'between ',
 					'help'				=> __('Find values between two values with %s to %s', array(
 						'<code>$x</code>',
 						'<code>$y</code>'
