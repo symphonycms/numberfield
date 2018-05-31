@@ -3,7 +3,7 @@
 	Class extension_numberfield extends Extension {
 
 		public function uninstall() {
-			Symphony::Database()
+			return Symphony::Database()
 				->drop('tbl_fields_number')
 				->ifExists()
 				->execute()
