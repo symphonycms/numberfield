@@ -17,7 +17,7 @@
 	<releases>
 		<release version="1.8.0" date="2018-11-01" min="2.5.x" max="2.x.x">
 			- Accept comma-notation in decimal input values ([#19](https://github.com/symphonycms/numberfield/issues/19))
-			- Added missing issus url to extension.meta.xml
+			- Added missing issues-url to extension.meta.xml
 		</release>
 		<release version="1.7.2" date="2017-08-23" min="2.5.x" max="2.x.x">
 			- PHP7 Compatibility for Symphony 2.x.x
