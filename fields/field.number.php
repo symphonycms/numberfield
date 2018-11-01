@@ -100,12 +100,17 @@
 		public function checkPostFieldData($data, &$message, $entry_id = null) {
 			$message = NULL;
 
-			if($this->get('required') == 'yes' && strlen($data) == 0){
+			// transform comma-based notation into dot-based notation so it
+			// doesn't throw an error (as the comma will be replaced before
+			// saving the value in the database)
+			$value = str_replace(',', '.', $data);
+
+			if($this->get('required') == 'yes' && strlen($value) == 0){
 				$message = __('‘%s’ is a required field.', array($this->get('label')));
 				return self::__MISSING_FIELDS__;
 			}
 
-			if(strlen($data) > 0 && !is_numeric($data)) {
+			if(strlen($value) > 0 && !is_numeric($value)) {
 				$message = __('Must be a number.');
 				return self::__INVALID_FIELDS__;
 			}
@@ -116,10 +121,13 @@
 		public function processRawFieldData($data, &$status, &$message=null, $simulate = false, $entry_id = null) {
 			$status = self::__OK__;
 
-			if (strlen(trim($data)) == 0) return array();
+			// transform comma-based notation into dot-based notation
+			$value = str_replace(',', '.', $data);
+
+			if (strlen(trim($value)) == 0) return array();
 
 			$result = array(
-				'value' => $data
+				'value' => $value
 			);
 
 			return $result;

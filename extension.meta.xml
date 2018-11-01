@@ -3,17 +3,22 @@
 	<name>Number Field</name>
 	<description>Dedicated number storage</description>
 	<repo type="github">https://github.com/symphonycms/numberfield</repo>
-	<url type="discuss">http://getsymphony.com/discuss/thread/144/</url>
+	<url type="discuss">https://www.getsymphony.com/discuss/thread/144/</url>
+	<url type="issues">https://github.com/symphonycms/numberfield/issues</url>
 	<types>
 		<type>Field Types</type>
 	</types>
 	<authors>
 		<author>
 			<name github="symphonycms" symphony="team">Symphony Team</name>
-			<website>http://getsymphony.com</website>
+			<website>https://www.getsymphony.com</website>
 		</author>
 	</authors>
 	<releases>
+		<release version="1.8.0" date="2018-11-01" min="2.5.x" max="2.x.x">
+			- Accept comma-notation in decimal input values ([#19](https://github.com/symphonycms/numberfield/issues/19))
+			- Added missing issus url to extension.meta.xml
+		</release>
 		<release version="1.7.2" date="2017-08-23" min="2.5.x" max="2.x.x">
 			- PHP7 Compatibility for Symphony 2.x.x
 		</release>
