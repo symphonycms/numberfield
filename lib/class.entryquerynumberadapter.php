@@ -33,6 +33,28 @@ class EntryQueryNumberAdapter extends EntryQueryFieldAdapter
         return ['or' => $conditions];
     }
 
+    public function isFilterTo($filter)
+    {
+        return preg_match('/^(-?(?:\d+(?:\.\d+)?|\.\d+)) to (-?(?:\d+(?:\.\d+)?|\.\d+))$/i', $filter);
+    }
+
+    public function createFilterTo($filter, array $columns)
+    {
+        $field_id = General::intval($this->field->get('id'));
+        $filter = $this->field->cleanValue($filter);
+        $matches = [];
+        preg_match('/^(-?(?:\d+(?:\.\d+)?|\.\d+)) to (-?(?:\d+(?:\.\d+)?|\.\d+))$/i', $filter, $matches);
+
+        $conditions = [];
+        foreach ($columns as $key => $col) {
+            $conditions[] = [$this->formatColumn($col, $field_id) => ['between' => [(int)$matches[1], (int)$matches[2]]]];
+        }
+        if (count($conditions) < 2) {
+            return $conditions;
+        }
+        return ['or' => $conditions];
+    }
+
     public function isFilterEqualLesserGreater($filter)
     {
         return preg_match('/^(equal to or )?(less|greater) than\s*(-?(?:\d+(?:\.\d+)?|\.\d+))$/i', $filter);
@@ -105,6 +127,8 @@ class EntryQueryNumberAdapter extends EntryQueryFieldAdapter
         ]);
         if ($this->isFilterBetween($filter)) {
             return $this->createFilterBetween($filter, $this->getFilterColumns());
+        } elseif ($this->isFilterTo($filter)) {
+            return $this->createFilterTo($filter, $this->getFilterColumns());
         } elseif ($this->isFilterEqualLesserGreater($filter)) {
             return $this->createFilterEqualLesserGreater($filter, $this->getFilterColumns());
         } elseif ($this->isFilterSymbol($filter)) {

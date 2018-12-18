@@ -244,7 +244,15 @@
 				),
 				array(
 					'title'				=> 'between',
-					'filter'			=> 'between ',
+					'filter'			=> 'between: ',
+					'help'				=> __('Find values between two values with %s and %s', array(
+						'<code>$x</code>',
+						'<code>$y</code>'
+					))
+				),
+				array(
+					'title'				=> 'to',
+					'filter'			=> ' to ',
 					'help'				=> __('Find values between two values with %s to %s', array(
 						'<code>$x</code>',
 						'<code>$y</code>'
